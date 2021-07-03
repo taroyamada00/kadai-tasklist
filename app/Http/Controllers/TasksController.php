@@ -28,6 +28,7 @@ class TasksController extends Controller
         //バリデーション
         $request->validate([
             'status' => 'required|max:10',
+            'content' => 'required',
         ]);
         
         //タスクを作成
@@ -64,6 +65,7 @@ class TasksController extends Controller
         //バリデーション
         $request->validate([
             'status' => 'required|max:10',
+            'content' => 'required',
         ]);
         
         //idを検索して取得
