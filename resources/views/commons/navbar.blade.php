@@ -10,11 +10,18 @@
                 <div class="collapse navbar-collapse" id="nav-bar">
                     <ul class="navbar-nav mr-auto"></ul>
                     <ul class="navbar-nav">
+                        @if (Auth::check())
+                            {{-- ユーザ名表示 --}}
+                            <li class="nav-link">{{ Auth::user()->name }}</li>
+                            {{-- ログアウトへのリンク --}}
+                            <li class="nav-item nav-link">{!! link_to_route('logout.get', 'Logout') !!}</li>
+                    </ul>
+                        @else
                         {{-- ユーザ登録ページへのリンク --}}
             {!! link_to_route('signup.get', 'Sign up', [], ['class' => 'nav-link']) !!}
-                        {{-- 新規タスクの作成ページへのリンク --}}
-                <li class="nav-item">{!! link_to_route('tasks.create', '新規タスクの作成', [], ['class' => 'nav-link']) !!}</li>
-                    </ul>
+                        {{-- ログインページへのリンク --}}
+                <li class="nav-item">{!! link_to_route('login', 'Login', [], ['class' => 'nav-link']) !!}</li>
+                    @endif
                 </div>
             </nav>
-        </header>
+</header>
