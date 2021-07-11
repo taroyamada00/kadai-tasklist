@@ -26,10 +26,13 @@ class TasksController extends Controller
     }
 
     public function create()
-    {
-        $task = new Task;
-        return view('tasks.create', ['task' => $task,
-        ]);
+    {   
+        if (\Auth::check()) { // 認証済みの場合
+            $task = new Task;
+            return view('tasks.create', ['task' => $task,
+            ]);
+        }
+        return redirect('/');
     }
 
     public function store(Request $request)
