@@ -54,9 +54,12 @@ class TasksController extends Controller
         //idを検索して取得
         $task = Task::findOrFail($id);
         
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        if (\Auth::check()) {// 認証済みの場合
+            //詳細ページを表示
+            return view('tasks.show', ['task' => $task,]);
+        }
+        //認証済みじゃない人がアクセスを試みるとトップにリダイレクト
+        return redirect('/');
     }
 
     public function edit($id)
@@ -64,9 +67,12 @@ class TasksController extends Controller
         //idを検索して取得
         $task = Task::findOrFail($id);
         
-        return view('tasks.edit', 
-            ['task' => $task,
-        ]);
+        if (\Auth::check()) {// 認証済みの場合
+            //編集画面を表示
+            return view('tasks.edit',['task' => $task,]);
+        }
+        //認証済みじゃない人がアクセスを試みるとトップにリダイレクト
+        return redirect('/');
     }
 
     public function update(Request $request, $id)
@@ -80,9 +86,12 @@ class TasksController extends Controller
         //idを検索して取得
         $task = Task::findOrFail($id);
         
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を更新
+        if (\Auth::id() === $task->user_id) {
+            $task->status = $request->status;
+            $task->content = $request->content;
+            $task->save();
+        }
         
         return redirect('/');
     }
