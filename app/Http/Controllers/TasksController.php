@@ -54,7 +54,7 @@ class TasksController extends Controller
         //idを検索して取得
         $task = Task::findOrFail($id);
         
-        if (\Auth::check()) {// 認証済みの場合
+        if (\Auth::id() === $task->user_id) {// 閲覧者===その投稿の所有者
             //詳細ページを表示
             return view('tasks.show', ['task' => $task,]);
         }
@@ -67,11 +67,11 @@ class TasksController extends Controller
         //idを検索して取得
         $task = Task::findOrFail($id);
         
-        if (\Auth::check()) {// 認証済みの場合
+        if (\Auth::id() === $task->user_id) {// 閲覧者===その投稿の所有者
             //編集画面を表示
             return view('tasks.edit',['task' => $task,]);
         }
-        //認証済みじゃない人がアクセスを試みるとトップにリダイレクト
+        //閲覧者===その投稿の所有者でない人がアクセスを試みるとトップにリダイレクト
         return redirect('/');
     }
 

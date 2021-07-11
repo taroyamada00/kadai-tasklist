@@ -15,6 +15,5 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
 //認証済みユーザだけがアクセスできる
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::resource('tasks', 'TasksController', ['only' => ['store', 'destroy']]);
 });
